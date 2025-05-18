@@ -35,10 +35,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node_version }}
-          cache: 'npm'
+          cache: 'pnpm'
       - name: 의존성(라이브러리) 설치
-        run: npm ci
+        run: pnpm ci
       - name: 테스트 실행하기
-        run: npm test
+        run: pnpm test
       - name: 빌드하기
-        run: npm run build
+        run: pnpm run build
