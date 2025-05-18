@@ -4,9 +4,20 @@ name: 테스트 실행!
 # 이벤트 지정
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
   pull_request:
-    branches: ["main"]
+    branches:
+      - '**'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true # 이미 실행 중인 이전 워크플로우 취소
 
 # 작업 지정
 jobs:
@@ -15,14 +26,19 @@ jobs:
 
     strategy:
       matrix:
-        node_version: [18.x, 20.x, 22.x]
+        node_version: [20.x]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Nose.js ${{ matrix.node_version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node_version }}
-        cache: "npm"
-    - run: npm ci
-    - run: npm test
+      - name: Github Repository 파일 가져오기
+        uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node_version }}
+          cache: 'npm'
+      - name: 의존성(라이브러리) 설치
+        run: npm ci
+      - name: 테스트 실행하기
+        run: npm test
+      - name: 빌드하기
+        run: npm run build
