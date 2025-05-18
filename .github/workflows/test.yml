@@ -23,19 +23,13 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node_version: [20.x]
-
     steps:
       - name: Github Repository 파일 가져오기
         uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node_version }}
+      - name: Node 설치
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node_version }}
-          cache: 'pnpm'
+          node-version: 20
       - name: 의존성(라이브러리) 설치
         run: pnpm ci
       - name: 테스트 실행하기
