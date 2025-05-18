@@ -31,8 +31,8 @@ jobs:
         with:
           node-version: 20
       - name: 의존성(라이브러리) 설치
-        run: pnpm ci
+        run: npm ci
       - name: 테스트 실행하기
-        run: pnpm test
+        run: npm test
       - name: 빌드하기
-        run: pnpm run build
+        run: npm run build
